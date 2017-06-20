@@ -22,7 +22,7 @@ app.jinja_env.undefined = StrictUndefined
 @app.route('/')
 def index():
     """Homepage."""
-    a = jsonify([1,3])
+    a = jsonify([1, 3])
     return a
 
 
@@ -37,6 +37,4 @@ if __name__ == "__main__":
     # Use the DebugToolbar
     DebugToolbarExtension(app)
 
-
-    
     app.run(port=5000, host='0.0.0.0')

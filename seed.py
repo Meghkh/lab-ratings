@@ -2,8 +2,7 @@
 
 from sqlalchemy import func
 from model import User, Rating, Movie
-# from model import Rating
-# from model import Movie
+from datetime import datetime
 
 from model import connect_to_db, db
 from server import app
@@ -47,10 +46,15 @@ def load_movies():
     for row in open("seed_data/u.item"):
         row = row.rstrip()
         movie_row = row.split("|")
+        released_str = movie_row[2]
+        if released_str:
+            released_at = datetime.strptime(released_str, "%d-%b-%Y")
+        else:
+            released_at = None
 
         movie = Movie(movie_id=movie_row[0],
                       title=movie_row[1],
-                      released_at=movie_row[2],
+                      released_at=released_at,
                       imdb_url=movie_row[4])
 
         db.session.add(movie)
@@ -63,20 +67,17 @@ def load_ratings():
 
     print "Ratings"
 
-
     # Delete all rows in table, so if we need to run this a second time,
     # we wont be trying to add duplicate ratings
-
     Rating.query.delete()
 
     # Read u.data file and insert data
     for row in open("seed_data/u.data"):
         row = row.rstrip()
-        rating_id, user_id, movie_id, score = row.split("\t")
+        user_id, movie_id, score, timestamp = row.split("\t")
 
-        rating = Rating(rating_id=rating_id,
+        rating = Rating(movie_id=movie_id,
                         user_id=user_id,
-                        movie_id=movie_id,
                         score=score)
 
         db.session.add(rating)
