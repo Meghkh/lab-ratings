@@ -15,7 +15,7 @@ db = SQLAlchemy()
 class User(db.Model):
     """User of ratings website."""
 
-    __tablename__ = "users"
+    __tablename__ = 'users'
 
     user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     email = db.Column(db.String(64), nullable=True)
@@ -23,8 +23,44 @@ class User(db.Model):
     age = db.Column(db.Integer, nullable=True)
     zipcode = db.Column(db.String(15), nullable=True)
 
+    def __repr__(self):
+        """Show info about a user."""
+
+        return '<User user_id=%d>' % (self.user_id)
+
 
 # Put your Movie and Rating model classes here.
+
+class Rating(db.Model):
+    """Rating of a movie by user."""
+
+    __tablename__ = 'ratings'
+
+    rating_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    movie_id = db.Column(db.Integer, nullable=False)
+    user_id = db.Column(db.Integer, nullable=False)
+    score = db.Column(db.Integer, nullable=False)
+
+    def __repr__(self):
+        """Show info about ratings."""
+
+        return '<Rating id=%d movie_id=%d user_id=%d>' % (self.rating_id, self.movie_id, self.user_id)
+
+
+class Movie(db.Model):
+    """Movie of ratings website."""
+
+    __tablename__ = 'movies'
+
+    movie_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    title = db.Column(db.String(50), nullable=False)
+    released_at = db.Column(db.DateTime, nullable=True)
+    imdb_url = db.Column(db.String(150), nullable=True)
+
+    def __repr__(self):
+        """Show info about movie."""
+
+        return '<Movie id=%d title=%s>' % (self.movie_id, self.title)
 
 
 ##############################################################################
