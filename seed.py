@@ -47,21 +47,27 @@ def load_movies():
     for row in open("seed_data/u.item"):
         row = row.rstrip()
         # make a tuple of movie data, only slice beginning of array
-        movie_row = row.split("|")[:5]
+        # movie_row = row.split("|")[:5]
         # could have done unpacking:
         # movie_id, title, released_str, _, imdb_url = row.split('|')[:5]
-        released_str = movie_row[2]
+        movie_id, title, released_str, _, imdb_url = row.split('|')[:5]
+        # released_str = movie_row[2]
         if released_str:
-            # postgreSQL doesn't technically need date object formatting, can read 
-            # properly formatted date/datetime as a string (ISO format)
+            # postgreSQL doesn't technically need date object formatting, can
+            # read properly formatted date/datetime as a string (ISO format)
             released_at = datetime.strptime(released_str, "%d-%b-%Y")
         else:
             released_at = None
 
-        movie = Movie(movie_id=movie_row[0],
-                      title=movie_row[1][:-6],
+        # movie = Movie(movie_id=movie_row[0],
+        #               title=movie_row[1][:-7],
+        #               released_at=released_at,
+        #               imdb_url=movie_row[4])
+
+        movie = Movie(movie_id=movie_id,
+                      title=title[:-7],
                       released_at=released_at,
-                      imdb_url=movie_row[4])
+                      imdb_url=imdb_url)
 
         db.session.add(movie)
 
