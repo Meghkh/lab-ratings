@@ -97,13 +97,10 @@ def confirm_login():
 def user_logout():
     """Logout user and clear session information."""
 
-    # flash("Logged out {}".format(session['current_user']))
-    user = session['current_user']
-    print user
-    flash("Logged out {}".format(user))
-    session.clear()
+    user_name = session['current_user']
     print session
-    print "print after session clear"
+    session.clear()
+    flash("Logged out {}".format(user_name))
     return redirect("/")
 
 
