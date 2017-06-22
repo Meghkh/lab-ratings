@@ -67,6 +67,46 @@ def confirm_registration():
     return render_template("registration.html")
 
 
+@app.route('/login')
+def display_login_form():
+    """Show login form."""
+
+    return render_template("login.html")
+
+
+@app.route('/login', methods=['POST'])
+def confirm_login():
+    """Log user in using session information."""
+
+    email = request.form['username']
+    password = request.form['password']
+
+    user_object = db.session.query(User).filter(User.email == email).one()
+
+    if password == user_object.password:
+        session['current_user'] = email
+        flash("Logged in as {}".format(email))
+        return redirect("/")
+
+    else:
+        flash("Incorrect username or password.")
+        return redirect("/login")
+
+
+@app.route('/logout')
+def user_logout():
+    """Logout user and clear session information."""
+
+    # flash("Logged out {}".format(session['current_user']))
+    user = session['current_user']
+    print user
+    flash("Logged out {}".format(user))
+    session.clear()
+    print session
+    print "print after session clear"
+    return redirect("/")
+
+
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the
     # point that we invoke the DebugToolbarExtension
