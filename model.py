@@ -26,7 +26,7 @@ class User(db.Model):
     def __repr__(self):
         """Show info about a user."""
 
-        return '<User user_id=%d>' % (self.user_id)
+        return '<User user_id={}>'.format(self.user_id)
 
 
 # Put your Movie and Rating model classes here.
