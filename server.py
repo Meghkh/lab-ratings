@@ -34,6 +34,18 @@ def user_list():
     return render_template("user_list.html", users=users)
 
 
+@app.route('/users/<user_id>')
+def user_detail(user_id):
+    """Show detailed user information."""
+
+    user = db.session.query(User).filter(User.user_id == user_id).first()
+    ratings = user.ratings
+
+    return render_template("user_detail.html",
+                           user=user,
+                           ratings=ratings)
+
+
 @app.route('/registration')
 def user_registration():
     """Show registration form."""
@@ -98,7 +110,6 @@ def user_logout():
     """Logout user and clear session information."""
 
     user_name = session['current_user']
-    print session
     session.clear()
     flash("Logged out {}".format(user_name))
     return redirect("/")
