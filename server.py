@@ -46,6 +46,21 @@ def user_detail(user_id):
                            ratings=ratings)
 
 
+@app.route('/movies')
+def movie_list():
+    """Show list of movies."""
+
+    movies = Movie.query.all()
+    return render_template("movie_list.html", movies=movies)
+
+
+@app.route('/movies/<movie_id>')
+def movie_detail(movie_id):
+    """Show detailed movie information."""
+
+    # movie = db.session.query(Movie).filter(Movie.movie_id == movie_id).first()
+
+
 @app.route('/registration')
 def user_registration():
     """Show registration form."""
@@ -98,7 +113,12 @@ def confirm_login():
     if password == user_object.password:
         session['current_user'] = email
         flash("Logged in as {}".format(email))
-        return redirect("/")
+        # Tried "/users/<int:user_id>"
+        # Fail in psycopg. Error: expecting integer and getting a string.
+        # Tried "/users/" + user_object.user_id.
+        # Error: concatenation error for str and int.
+        # Cast "/users/" + user_object.user_id as a string. See below:
+        return redirect("/users/" + str(user_object.user_id))
 
     else:
         flash("Incorrect username or password.")
