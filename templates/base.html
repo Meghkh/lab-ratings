@@ -1,0 +1,24 @@
+<!doctype html>
+<html>
+<head>
+  <title>Ratings</title>
+</head>
+
+<body>
+  {% if 'current_user' in session %}
+    <form action='/logout' id='logout-btn'>
+      <input style="float:right;" type='submit' value='Logout, {{ session.current_user }}'></input>
+    </form>
+  {% endif %}
+  <h2>MovieLens - the Ratings site for Movies!</h2>
+  <hr>
+
+  <ul>
+    {% for message in get_flashed_messages() %}
+      <li>{{ message }}</li>
+    {% endfor %}
+  </ul>
+
+  {% block content %}  {% endblock %}
+</body>
+</html>
